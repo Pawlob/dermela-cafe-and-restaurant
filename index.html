@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delmela Café & Restaurant | Ethiopia</title>
+    <meta name="description" content="Experience the best of Ethiopian tradition and modern tastes at Delmela Café and Restaurant.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '375px',
+                    },
+                    colors: {
+                        brand: {
+                            light: '#4DB6AC', // Light Teal
+                            DEFAULT: '#006D77', // Rich Teal (Primary Brand Color)
+                            dark: '#004D40', // Dark Teal
+                            accent: '#FFD700', // Gold (kept for subtle highlights)
+                            gray: '#EDF6F9' // Very light cool gray for backgrounds
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans Ethiopic', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        amharic: ['Noto Sans Ethiopic', 'sans-serif'],
+                    },
+                    animation: {
+                        'ken-burns': 'kenBurns 20s ease-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                    },
+                    keyframes: {
+                        kenBurns: {
+                            '0%': { transform: 'scale(1)' },
+                            '100%': { transform: 'scale(1.1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #EDF6F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #006D77;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #004D40;
+        }
+
+        /* Hero Background with Ken Burns Effect */
+        .hero-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg-img {
+            background-image: linear-gradient(rgba(0, 40, 40, 0.6), rgba(0, 20, 20, 0.5)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .coffee-pattern {
+            background-color: #f0fdfa;
+            background-image: radial-gradient(#006D77 0.5px, transparent 0.5px), radial-gradient(#006D77 0.5px, #f0fdfa 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.6;
+        }
+
+        /* Glassmorphism Card Hover */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px -10px rgba(0, 109, 119, 0.2);
+        }
+        
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #EDF6F9;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease-out, visibility 0.5s;
+        }
+        .loader-spin {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #006D77;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Scroll Progress Bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #E9C46A;
+            z-index: 100;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.active {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* Animations */
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased selection:bg-brand selection:text-white overflow-x-hidden">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-spin mb-4"></div>
+        <h2 class="text-2xl font-serif font-bold text-brand-dark tracking-widest">Delmela</h2>
+        <p class="text-brand-dark/50 text-sm mt-2 font-medium tracking-wider animate-pulse">Loading...</p>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm transition-all duration-300 border-b border-white/20 py-2" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center group cursor-pointer">
+                    <a href="#" class="font-serif text-3xl font-bold text-brand-dark tracking-tighter group-hover:text-brand transition-colors duration-300">
+                        Delmela<span class="text-brand text-4xl group-hover:text-brand-accent transition-colors">.</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6 lg:space-x-8 items-center">
+                    <a href="#home" class="nav-link text-gray-600 hover:text-brand transition font-medium relative group text-center">
+                        Home
+                        <span class="block text-[10px] font-amharic text-gray-400 group-hover:text-brand-light transition-colors">መነሻ</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#about" class="nav-link text-gray-600 hover:text-brand transition font-medium relative group text-center">
+                        Our Story
+                        <span class="block text-[10px] font-amharic text-gray-400 group-hover:text-brand-light transition-colors">ታሪካችን</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#menu" class="nav-link text-gray-600 hover:text-brand transition font-medium relative group text-center">
+                        Menu
+                        <span class="block text-[10px] font-amharic text-gray-400 group-hover:text-brand-light transition-colors">ሜኑ</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#services" class="nav-link text-gray-600 hover:text-brand transition font-medium relative group text-center">
+                        Services
+                        <span class="block text-[10px] font-amharic text-gray-400 group-hover:text-brand-light transition-colors">አገልግሎቶች</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#contact" class="nav-link text-gray-600 hover:text-brand transition font-medium relative group text-center">
+                        Contact
+                        <span class="block text-[10px] font-amharic text-gray-400 group-hover:text-brand-light transition-colors">ያግኙን</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <!-- Proposal Link -->
+                    <button onclick="openProposal()" class="bg-brand/10 text-brand-dark px-4 py-2 rounded-lg font-medium hover:bg-brand hover:text-white transition duration-300 border border-brand/20 text-sm flex flex-col items-center leading-tight">
+                        Proposal
+                        <span class="block text-[9px] font-amharic opacity-70">ፕሮፖዛል</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-btn" class="text-gray-600 hover:text-brand focus:outline-none transition-transform active:scale-95 p-2 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100">
+            <div class="px-4 pt-4 pb-6 space-y-2 text-center">
+                <a href="#home" class="block px-4 py-3 text-base font-medium text-gray-700 hover:text-brand hover:bg-gray-50/50 rounded-xl transition-all">
+                    Home <span class="block text-xs font-amharic text-gray-400 mt-0.5">መነሻ</span>
+                </a>
+                <a href="#about" class="block px-4 py-3 text-base font-medium text-gray-700 hover:text-brand hover:bg-gray-50/50 rounded-xl transition-all">
+                    About <span class="block text-xs font-amharic text-gray-400 mt-0.5">ስለ እኛ</span>
+                </a>
+                <a href="#menu" class="block px-4 py-3 text-base font-medium text-gray-700 hover:text-brand hover:bg-gray-50/50 rounded-xl transition-all">
+                    Menu <span class="block text-xs font-amharic text-gray-400 mt-0.5">ሜኑ</span>
+                </a>
+                <a href="#contact" class="block px-4 py-3 text-base font-medium text-gray-700 hover:text-brand hover:bg-gray-50/50 rounded-xl transition-all">
+                    Contact <span class="block text-xs font-amharic text-gray-400 mt-0.5">ያግኙን</span>
+                </a>
+                <button onclick="openProposal()" class="w-full block px-4 py-3 text-base font-medium text-brand-dark bg-brand/5 hover:bg-brand/10 rounded-xl transition-all mt-4 border border-brand/10">
+                    View Proposal <span class="block text-xs font-amharic text-gray-500 mt-0.5">ፕሮፖዛል ይመልከቱ</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Proposal Modal -->
+    <div id="proposal-modal" class="fixed inset-0 z-[100] hidden opacity-0 transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeProposal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white w-[95%] max-w-4xl h-[85vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col scale-95 transition-transform duration-300" id="proposal-content-wrapper">
+            <!-- Modal Header -->
+            <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-brand rounded-lg flex items-center justify-center text-white text-xl shadow-md"><i class="fas fa-file-alt"></i></div>
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800 font-serif">Web Design Proposal</h2>
+                        <p class="text-xs text-gray-500 font-amharic">የድር ጣቢያ ንድፍ ፕሮፖዛል</p>
+                    </div>
+                </div>
+                <button onclick="closeProposal()" class="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-full hover:bg-red-50">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div class="flex-grow overflow-y-auto p-8 md:p-12 prose max-w-none text-gray-600">
+                
+                <!-- Header Info -->
+                <div class="flex flex-col md:flex-row justify-between mb-12 border-b-2 border-brand/10 pb-8">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-bold text-brand-dark mb-2 font-serif">Delmela Digital Experience</h1>
+                        <p class="text-lg text-gray-500">Website Redesign & Development Project</p>
+                    </div>
+                    <div class="mt-6 md:mt-0 text-right">
+                        <p class="font-bold text-gray-800">Prepared For:</p>
+                        <p class="text-gray-600 mb-2">Delmela Café & Restaurant</p>
+                        <p class="font-bold text-gray-800">Prepared By:</p>
+                        <p class="text-brand font-medium">Pawlos Mulugeta</p>
+                        <p class="text-sm text-gray-400 mt-1">December 2024</p>
+                    </div>
+                </div>
+
+                <!-- 1. Executive Summary -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center"><span class="w-8 h-8 bg-brand/10 text-brand rounded-full flex items-center justify-center mr-3 text-sm">01</span> Executive Summary</h3>
+                    <p class="leading-relaxed">
+                        Delmela Café & Restaurant, located in the vibrant Summit area of Addis Ababa, represents a unique fusion of traditional Ethiopian heritage and modern international tastes. To reflect this dual identity, we propose a comprehensive digital transformation. This proposal outlines the strategy to design and develop a responsive, bilingual, and interactive website that enhances brand visibility and customer engagement.
+                    </p>
+                </div>
+
+                <!-- 2. Project Objectives -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center"><span class="w-8 h-8 bg-brand/10 text-brand rounded-full flex items-center justify-center mr-3 text-sm">02</span> Objectives</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                            <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-globe text-brand mr-2"></i> Brand Digitalization</h4>
+                            <p class="text-sm">Establish a strong online presence that mirrors the physical ambiance of the restaurant.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                            <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-users text-brand mr-2"></i> Accessibility</h4>
+                            <p class="text-sm">Ensure the platform is accessible to both local (Amharic speaking) and international (English speaking) customers.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                            <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-utensils text-brand mr-2"></i> Menu Showcase</h4>
+                            <p class="text-sm">Highlight the diverse menu (Breakfast, Bowls, Sandwiches) with high-quality imagery and pricing.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                            <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-star text-brand mr-2"></i> Social Proof</h4>
+                            <p class="text-sm">Integrate a review system to build trust and encourage new visitors through community feedback.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Technical Solution -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center"><span class="w-8 h-8 bg-brand/10 text-brand rounded-full flex items-center justify-center mr-3 text-sm">03</span> Technical Solution</h3>
+                    <p class="mb-4">We will utilize a modern, lightweight technology stack to ensure speed, reliability, and ease of maintenance.</p>
+                    <ul class="list-disc pl-6 space-y-2 text-gray-600">
+                        <li><strong>Frontend:</strong> HTML5, JavaScript (ES6+).</li>
+                        <li><strong>Styling:</strong> Tailwind CSS for a utility-first, responsive design system.</li>
+                        <li><strong>Icons/Fonts:</strong> Font Awesome 6 & Google Fonts (Playfair Display, Inter, Noto Sans Ethiopic).</li>
+                        <li><strong>Performance:</strong> Client-side pagination, lazy loading, and optimized assets.</li>
+                        <li><strong>Responsiveness:</strong> Mobile-first architecture ensuring compatibility across all devices (Phone, Tablet, Desktop).</li>
+                    </ul>
+                </div>
+
+                <!-- 4. Key Features -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center"><span class="w-8 h-8 bg-brand/10 text-brand rounded-full flex items-center justify-center mr-3 text-sm">04</span> Key Features</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-brand mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">Dynamic Menu System:</strong> Filterable categories (Breakfast, Bowls, Wraps) with client-side pagination to handle large inventories smoothly.
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-brand mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">Bilingual Interface:</strong> Seamless integration of Amharic translations for key UI elements to serve the local community.
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-brand mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">Interactive Reviews:</strong> A simulated 5-star rating system allowing users to post reviews instantly.
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-check-circle text-brand mt-1 mr-3"></i>
+                            <div>
+                                <strong class="text-gray-800">Visual Immersion:</strong> "Ken Burns" hero animation, glassmorphism UI elements, and scroll-triggered reveal animations.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Timeline -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center"><span class="w-8 h-8 bg-brand/10 text-brand rounded-full flex items-center justify-center mr-3 text-sm">05</span> Project Timeline</h3>
+                    <div class="relative border-l-2 border-brand/20 ml-3 space-y-8 pl-8 py-2">
+                        <div class="relative">
+                            <span class="absolute -left-[41px] top-0 w-6 h-6 bg-brand rounded-full border-4 border-white shadow"></span>
+                            <h4 class="font-bold text-gray-800">Week 1: Discovery & Design</h4>
+                            <p class="text-sm text-gray-500">Requirement gathering, UI prototyping, and asset collection.</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[41px] top-0 w-6 h-6 bg-brand/60 rounded-full border-4 border-white shadow"></span>
+                            <h4 class="font-bold text-gray-800">Week 2: Development</h4>
+                            <p class="text-sm text-gray-500">Core structure coding, responsive layout implementation, and bilingual integration.</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[41px] top-0 w-6 h-6 bg-brand/40 rounded-full border-4 border-white shadow"></span>
+                            <h4 class="font-bold text-gray-800">Week 3: Testing & Polish</h4>
+                            <p class="text-sm text-gray-500">Cross-browser testing, mobile optimization, animation tuning.</p>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute -left-[41px] top-0 w-6 h-6 bg-brand/20 rounded-full border-4 border-white shadow"></span>
+                            <h4 class="font-bold text-gray-800">Week 4: Launch</h4>
+                            <p class="text-sm text-gray-500">Deployment and final handover.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Investment -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center"><span class="w-8 h-8 bg-brand/10 text-brand rounded-full flex items-center justify-center mr-3 text-sm">06</span> Investment</h3>
+                    <p class="mb-6 text-gray-600">The following outlines the investment required for the design, development, and launch of the Delmela digital experience.</p>
+                    
+                    <div class="bg-white border border-gray-100 rounded-xl overflow-hidden shadow-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-3 border-b border-gray-100 bg-gray-50/50">
+                            <div class="p-4 font-bold text-gray-700 md:col-span-2">Service Item</div>
+                            <div class="p-4 font-bold text-gray-700 text-right">Cost</div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 border-b border-gray-50">
+                            <div class="p-4 md:col-span-2">
+                                <h4 class="font-bold text-gray-800">UI/UX Design & Prototyping</h4>
+                                <p class="text-sm text-gray-500 mt-1">Custom visuals, mobile-first layouts, and brand integration.</p>
+                            </div>
+                            <div class="p-4 text-right text-gray-600 font-medium">15,000 ETB</div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 border-b border-gray-50">
+                            <div class="p-4 md:col-span-2">
+                                <h4 class="font-bold text-gray-800">Frontend Development</h4>
+                                <p class="text-sm text-gray-500 mt-1">HTML5, Tailwind CSS implementation, Animations, and Bilingual setup.</p>
+                            </div>
+                            <div class="p-4 text-right text-gray-600 font-medium">25,000 ETB</div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 border-b border-gray-50">
+                            <div class="p-4 md:col-span-2">
+                                <h4 class="font-bold text-gray-800">Content & SEO Optimization</h4>
+                                <p class="text-sm text-gray-500 mt-1">Copywriting, image optimization, and basic SEO configuration.</p>
+                            </div>
+                            <div class="p-4 text-right text-gray-600 font-medium">10,000 ETB</div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 border-b border-gray-50">
+                            <div class="p-4 md:col-span-2">
+                                <h4 class="font-bold text-gray-800">Deployment & Hosting Setup</h4>
+                                <p class="text-sm text-gray-500 mt-1">Server configuration, domain connection, and launch support.</p>
+                            </div>
+                            <div class="p-4 text-right text-gray-600 font-medium">4,000 ETB</div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 bg-brand/5">
+                            <div class="p-5 md:col-span-2 font-bold text-brand-dark text-lg">Total Project Investment</div>
+                            <div class="p-5 text-right font-bold text-brand text-lg">54,000 ETB</div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-4 italic">* Payment Terms: 50% upfront, 50% upon completion. Ongoing maintenance packages available separately.</p>
+                </div>
+
+                <!-- 7. Contact -->
+                <div class="mb-4">
+                    <h3 class="text-xl font-bold text-brand-dark mb-4 flex items-center"><span class="w-8 h-8 bg-brand/10 text-brand rounded-full flex items-center justify-center mr-3 text-sm">07</span> Contact & Next Steps</h3>
+                    <p class="mb-6 text-gray-600">Ready to transform the Delmela digital experience? Reach out to finalize the agreement and kick off the project.</p>
+                    
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-brand text-white rounded-full flex items-center justify-center text-xl shadow-md">
+                                <span class="font-serif font-bold">P</span>
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800">Pawlos Mulugeta</p>
+                                <p class="text-sm text-brand">Lead Developer & Designer</p>
+                            </div>
+                        </div>
+                        <div class="text-center md:text-right">
+                            <p class="text-gray-600"><i class="fas fa-envelope mr-2 text-brand-accent"></i> Pawlob.21@gmail.com</p>
+                            <p class="text-gray-600 mt-1"><i class="fas fa-phone mr-2 text-brand-accent"></i> 0908786726</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-6 bg-gray-50 border-t border-gray-100 text-center">
+                <button onclick="closeProposal()" class="bg-brand hover:bg-brand-dark text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    Close Proposal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-container min-h-screen flex items-center justify-center relative py-20">
+        <!-- Ken Burns Background -->
+        <div class="hero-bg-img animate-ken-burns"></div>
+        
+        <div class="text-center px-4 max-w-5xl mx-auto text-white relative z-10">
+            <div class="mb-12 max-w-3xl mx-auto animate-fade-in-up bg-black/10 backdrop-blur-[2px] p-6 rounded-3xl border border-white/10" style="animation-delay: 0.3s;">
+                <p class="text-2xl sm:text-3xl md:text-5xl text-white font-serif font-bold leading-tight px-2 drop-shadow-xl">
+                    Delmela brings the finest international delights to your table, offering a world of flavors in every bite.
+                </p>
+                <div class="w-20 h-1 bg-brand-accent mx-auto my-6 rounded-full"></div>
+                <p class="text-lg sm:text-xl text-gray-100 font-amharic px-2 font-medium tracking-wide">
+                    ዴልሜላ ምርጥ አለም አቀፍ ምግቦችን ወደ ጠረጴዛዎ ያቀርባል፣ በእያንዳንዱ ጉርሻ የአለምን ጣዕም ያጣጥሙ።
+                </p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up" style="animation-delay: 0.6s;">
+                <a href="#menu" class="group bg-brand hover:bg-brand-dark text-white px-10 py-4 rounded-full font-semibold transition-all duration-300 shadow-2xl hover:shadow-brand/50 hover:-translate-y-1 text-center min-w-[200px] border border-brand/50">
+                    <span class="text-lg">View Our Menu</span>
+                    <span class="block text-xs font-amharic text-brand-accent/90 font-normal mt-1 group-hover:text-white">ሜኑ ይመልከቱ</span>
+                </a>
+                <a href="#contact" class="group bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white hover:text-brand-dark text-white px-10 py-4 rounded-full font-semibold transition-all duration-300 hover:-translate-y-1 text-center min-w-[200px] hover:shadow-lg">
+                    <span class="text-lg">Find Us</span>
+                    <span class="block text-xs font-amharic font-normal mt-1 opacity-80 group-hover:opacity-100">አድራሻችን</span>
+                </a>
+            </div>
+
+            <!-- Credits (Fixed Positioning) -->
+            <p class="mt-16 text-[10px] text-white/60 font-light tracking-[0.2em] uppercase animate-fade-in-up" style="animation-delay: 1s;">
+                Designed by Pawlos Mulugeta
+            </p>
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/70 cursor-pointer z-20" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-chevron-down text-3xl drop-shadow-md"></i>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 md:py-32 coffee-pattern">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+                <div class="relative group reveal">
+                    <div class="absolute -inset-4 bg-brand/20 rounded-2xl transform rotate-3 transition duration-500 group-hover:rotate-6 group-hover:scale-105 hidden sm:block"></div>
+                    <img 
+                        src="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" 
+                        alt="Traditional Coffee Ceremony" 
+                        class="relative rounded-2xl shadow-2xl w-full object-cover h-64 sm:h-80 md:h-[500px] transition duration-500 transform group-hover:scale-[1.01]"
+                    >
+                    <div class="absolute bottom-[-20px] right-[-10px] md:bottom-[-30px] md:right-[-20px] bg-white p-4 md:p-6 rounded-xl shadow-xl border-l-4 border-brand hidden xs:block transition duration-300 hover:scale-110 origin-bottom-right">
+                        <p class="font-serif text-2xl md:text-3xl font-bold text-brand-dark">10+</p>
+                        <p class="text-gray-500 text-xs md:text-sm uppercase tracking-wide">Years of Excellence</p>
+                        <p class="text-gray-400 text-[10px] md:text-xs font-amharic mt-1">የ10 ዓመታት ልምድ</p>
+                    </div>
+                </div>
+                
+                <div class="reveal delay-200 mt-8 md:mt-0">
+                    <h4 class="text-brand font-bold uppercase tracking-widest mb-1 text-xs md:text-sm">Our Story</h4>
+                    <span class="block text-brand/70 font-amharic text-xs mb-2 font-bold">ታሪካችን</span>
+                    
+                    <h2 class="text-3xl md:text-5xl font-serif font-bold text-brand-dark mb-2">More Than Just a Café.</h2>
+                    <h3 class="text-xl font-amharic text-brand-dark/80 mb-6">ከካፌ በላይ</h3>
+                    
+                    <p class="text-gray-600 mb-2 leading-relaxed">
+                        Delmela started with a simple vision: to create a space that honors the rich Ethiopian coffee ceremony ("Jebena Bunna") while offering a comfortable, modern atmosphere for work, dining, and connection.
+                    </p>
+                    <p class="text-gray-500 font-amharic text-sm mb-6">
+                        ዴልሜላ የተጀመረው ቀላል ራዕይ ይዞ ነው፤ የኢትዮጵያን ባህላዊ የቡና ሥነ-ስርዓት እያከበረ ለስራ፣ ለመመገብ እና ለመገናኘት ምቹ የሆነ ዘመናዊ ቦታ መፍጠር።
+                    </p>
+                    
+                    <p class="text-gray-600 mb-2 leading-relaxed">
+                        Whether you are craving a spicy <strong>Doro Wat</strong>, a crispy wood-fired pizza, or simply the best <strong>Macchiato</strong> in town, our kitchen uses locally sourced organic ingredients to bring you flavors that feel like home.
+                    </p>
+                     <p class="text-gray-500 font-amharic text-sm mb-8">
+                        የዶሮ ወጥ፣ ፒዛ፣ ወይም ምርጥ ማኪያቶ ቢፈልጉ፣ ኩሽናችን የሀገር ውስጥ ኦርጋኒክ ግብአቶችን በመጠቀም የቤት ውስጥ ጣዕም ያቀርብልዎታል።
+                    </p>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center text-gray-700 transition hover:translate-x-2 duration-300">
+                            <i class="fas fa-check-circle text-brand mr-3"></i> 
+                            <div>
+                                <span>100% Organic Ethiopian Coffee</span>
+                                <span class="block text-xs font-amharic text-gray-500">100% ኦርጋኒክ የኢትዮጵያ ቡና</span>
+                            </div>
+                        </li>
+                        <li class="flex items-center text-gray-700 transition hover:translate-x-2 duration-300">
+                            <i class="fas fa-check-circle text-brand mr-3"></i> 
+                            <div>
+                                <span>Authentic Cultural Ambiance</span>
+                                <span class="block text-xs font-amharic text-gray-500">ትክክለኛ ባህላዊ ድባብ</span>
+                            </div>
+                        </li>
+                        <li class="flex items-center text-gray-700 transition hover:translate-x-2 duration-300">
+                            <i class="fas fa-check-circle text-brand mr-3"></i> 
+                            <div>
+                                <span>Fast Wi-Fi & Co-working Friendly</span>
+                                <span class="block text-xs font-amharic text-gray-500">ፈጣን ዋይፋይ እና ለስራ ምቹ</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Highlights -->
+    <section id="menu" class="py-16 md:py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10 md:mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mb-1">Menu</h2>
+                <h3 class="text-xl font-amharic text-brand-dark/70 mb-4">ሜኑ</h3>
+                <div class="w-24 h-1 bg-brand mx-auto rounded-full"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">Explore our diverse selection of breakfast favorites, hearty bowls, and signature sandwiches.</p>
+                <p class="text-gray-500 font-amharic text-sm mt-1">የተለያዩ የቁርስ አማራጮችን፣ ቦል ምግቦችን እና ልዩ ሳንድዊቾችን ያስሱ።</p>
+            </div>
+
+            <!-- Categories -->
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12 reveal delay-100">
+                <button class="menu-filter active bg-brand-dark text-white px-4 py-2 md:px-6 md:py-2 rounded-full text-xs md:text-sm font-semibold transition shadow-md hover:-translate-y-1 flex flex-col items-center leading-tight" onclick="filterMenu('all')">
+                    All <span class="text-[8px] md:text-[10px] font-amharic font-normal opacity-90">ሁሉም</span>
+                </button>
+                <button class="menu-filter bg-gray-100 text-gray-600 hover:bg-brand hover:text-white px-4 py-2 md:px-6 md:py-2 rounded-full text-xs md:text-sm font-semibold transition hover:shadow-md hover:-translate-y-1 flex flex-col items-center leading-tight" onclick="filterMenu('breakfast')">
+                    Breakfast <span class="text-[8px] md:text-[10px] font-amharic font-normal opacity-90">ቁርስ</span>
+                </button>
+                <button class="menu-filter bg-gray-100 text-gray-600 hover:bg-brand hover:text-white px-4 py-2 md:px-6 md:py-2 rounded-full text-xs md:text-sm font-semibold transition hover:shadow-md hover:-translate-y-1 flex flex-col items-center leading-tight" onclick="filterMenu('bowls')">
+                    Rice & Bowls <span class="text-[8px] md:text-[10px] font-amharic font-normal opacity-90">ሩዝ እና ቦል</span>
+                </button>
+                <button class="menu-filter bg-gray-100 text-gray-600 hover:bg-brand hover:text-white px-4 py-2 md:px-6 md:py-2 rounded-full text-xs md:text-sm font-semibold transition hover:shadow-md hover:-translate-y-1 flex flex-col items-center leading-tight" onclick="filterMenu('sandwiches')">
+                    Sandwiches & Wraps <span class="text-[8px] md:text-[10px] font-amharic font-normal opacity-90">ሳንድዊች እና ራፕ</span>
+                </button>
+                <button class="menu-filter bg-gray-100 text-gray-600 hover:bg-brand hover:text-white px-4 py-2 md:px-6 md:py-2 rounded-full text-xs md:text-sm font-semibold transition hover:shadow-md hover:-translate-y-1 flex flex-col items-center leading-tight" onclick="filterMenu('desserts')">
+                    Desserts & Drinks <span class="text-[8px] md:text-[10px] font-amharic font-normal opacity-90">ጣፋጭ እና መጠጥ</span>
+                </button>
+            </div>
+
+            <!-- Grid -->
+            <div id="menu-grid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 min-h-[500px]">
+                
+                <!-- Breakfast: Egg & Waffle -->
+                <div class="menu-item breakfast reveal bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1599316773950-7f28203b5f92?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Egg & Waffle" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Egg & Waffle</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">607.20 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">እንቁላል እና ዋፍል</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Waffle topped with egg, caramelized carrot, Delmela sauce & grilled potatoes.</p>
+                    </div>
+                </div>
+
+                <!-- Breakfast: Shakshuka -->
+                <div class="menu-item breakfast reveal delay-100 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1590412200988-a436970781fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Shakshuka" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Shakshuka</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">537.77 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ሻክሹካ</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Sunny-side eggs in vine tomato sauce, garlic, olive oil, served with bread.</p>
+                    </div>
+                </div>
+
+                <!-- Breakfast: Special Chechebsa -->
+                <div class="menu-item breakfast reveal delay-200 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1525351484163-7529414395d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Special Chechebsa" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Special Chechebsa</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">676.63 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ልዩ ጨጨብሳ</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Flatbread with berbere and spiced butter, served with honey and yogurt.</p>
+                    </div>
+                </div>
+
+                <!-- Breakfast: Chicken & Waffle -->
+                <div class="menu-item breakfast reveal delay-300 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                         <img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Chicken And Waffle" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                         <span class="absolute top-3 right-3 bg-brand-accent text-brand-dark text-[8px] md:text-xs font-bold px-2 py-1 rounded-full shadow-lg z-10 animate-pulse">Popular <span class="font-amharic font-normal ml-1">ታዋቂ</span></span>
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Chicken & Waffle</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">982.13 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ዶሮ እና ዋፍል</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Fried boneless chicken breast on a waffle with special house sauce.</p>
+                    </div>
+                </div>
+
+                <!-- Bowl: Tika Tika Bowl -->
+                <div class="menu-item bowls reveal bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tika Tika Bowl" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Tika Tika Bowl</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">1,023.79 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ቲካ ቲካ ቦል</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Grilled chicken breast (or tuna/chickpeas) with creamy curry sauce and rice.</p>
+                    </div>
+                </div>
+
+                <!-- Bowl: Chicken Teriyaki Rice Bowl -->
+                <div class="menu-item bowls reveal delay-100 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Chicken Teriyaki" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Teriyaki Rice Bowl</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">1,023.79 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ቴሪያኪ የሩዝ ቦል</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Grilled chicken with house-made teriyaki sauce, rice, cabbage, and kosta.</p>
+                    </div>
+                </div>
+
+                <!-- Bowl: Keto Bowl -->
+                <div class="menu-item bowls reveal delay-200 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1543339308-43e59d6b73a6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Keto Bowl" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Keto Bowl</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">1,023.79 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ኬቶ ቦል</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Sautéed kosta, beef or chicken choice, two fried eggs, and avocado.</p>
+                    </div>
+                </div>
+
+                <!-- Bowl: Burrito Bowl -->
+                <div class="menu-item bowls reveal delay-300 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Burrito Bowl" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Burrito Bowl</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">718.29 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ቡሪቶ ቦል</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Kinche or rice, black beans, avocado, cilantro, tomato, and onions.</p>
+                    </div>
+                </div>
+
+                <!-- Sandwich: Delmela Sandwich -->
+                <div class="menu-item sandwiches reveal bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1520072959219-c595dc870360?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Delmela Sandwich" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                        <span class="absolute top-3 right-3 bg-brand-accent text-brand-dark text-[8px] md:text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10 animate-pulse">Signature <span class="font-amharic font-normal ml-1">ልዩ</span></span>
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Delmela Sandwich</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">1,078.64 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ዴልሜላ ሳንድዊች</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Fried chicken breast on a parsley waffle with coleslaw and Delmela sauce.</p>
+                    </div>
+                </div>
+
+                <!-- Sandwich: Beef Wrap -->
+                <div class="menu-item sandwiches reveal delay-100 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1626700051175-6818013e1d4f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Beef Wrap" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Beef Wrap</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">954.36 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">የበሬ ራፕ</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Beef with tzatziki sauce, vegetables, and potato wedges in pita.</p>
+                    </div>
+                </div>
+                
+                 <!-- Sandwich: Veggie Sandwich -->
+                 <div class="menu-item sandwiches reveal delay-200 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1544379373-c6c59b8c0620?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Veggie Sandwich" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Veggie Sandwich</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">787.72 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">አትክልት ሳንድዊች</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Spicy hummus, onion, tomato, and avocado with house sauce, grilled.</p>
+                    </div>
+                </div>
+
+                <!-- Dessert: Choco Waffle -->
+                <div class="menu-item desserts reveal delay-300 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1562088656-b0724e580e0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Choco Waffle" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Choco Waffle</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">1,023.79 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ቸኮሌት ዋፍል</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Chocolate waffle topped with ice cream, strawberry, and hot chocolate syrup.</p>
+                    </div>
+                </div>
+
+                <!-- Drink: Avocado Juice -->
+                <div class="menu-item desserts reveal bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1603569283847-aa295f0d016a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Avocado Juice" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Avocado Juice</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">300 ETB</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">አቮካዶ ጭማቂ</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Freshly made, creamy avocado juice.</p>
+                    </div>
+                </div>
+
+                <!-- Drink: Fizzy Drinks -->
+                <div class="menu-item desserts reveal delay-100 bg-white rounded-2xl shadow-md hover:shadow-2xl overflow-hidden card-hover border border-gray-100 group flex flex-col h-full">
+                    <div class="h-32 sm:h-40 md:h-52 overflow-hidden relative w-full">
+                        <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Fizzy Drinks" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                    </div>
+                    <div class="p-4 md:p-6 flex-grow flex flex-col">
+                        <div class="flex flex-col justify-between items-start mb-2">
+                            <div class="w-full flex justify-between items-start">
+                                <h3 class="text-sm md:text-lg font-bold text-brand-dark leading-tight group-hover:text-brand transition-colors">Fizzy Drinks</h3>
+                                <span class="text-brand-dark font-bold text-xs md:text-sm bg-brand-accent px-2 py-1 rounded-full whitespace-nowrap ml-2 shadow-sm">Available</span>
+                            </div>
+                            <span class="text-[10px] sm:text-xs font-amharic text-gray-400 block mt-1">ጋዝ ያላቸው መጠጦች</span>
+                        </div>
+                        <p class="text-gray-500 text-xs md:text-sm mb-3 line-clamp-3 md:line-clamp-none flex-grow">Available in strawberry, ginger mint, and mint flavors.</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div id="pagination-controls" class="flex justify-center space-x-2 mt-12 reveal"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-20 coffee-pattern">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brand-dark rounded-3xl shadow-2xl overflow-hidden p-6 md:p-12 reveal text-white">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <!-- Info Side -->
+                    <div class="flex flex-col justify-between order-2 md:order-1">
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-serif font-bold mb-2">Contact Us</h3>
+                            <h4 class="text-lg md:text-xl font-amharic mb-6 text-white/80">ያግኙን</h4>
+                            
+                            <p class="text-gray-300 mb-2 text-sm md:text-base">We look forward to serving you. Drop by for a coffee or dinner.</p>
+                            <p class="text-gray-400 font-amharic text-xs md:text-sm mb-8">እርስዎን ለማገልገል በጉጉት እንጠብቃለን። ለቡና ወይም ለእራት ጎራ ይበሉ።</p>
+                            
+                            <div class="space-y-6 md:space-y-8">
+                                <div class="flex items-start group">
+                                    <div class="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center mr-4 group-hover:bg-brand transition shrink-0">
+                                        <i class="fas fa-map-marker-alt text-brand-accent"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-base md:text-lg">Location <span class="font-normal text-xs font-amharic text-gray-300 ml-1">አድራሻ</span></h4>
+                                        <p class="text-gray-300 text-sm md:text-base">Bole Road, Near Friendship Park<br>Addis Ababa, Ethiopia</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start group">
+                                    <div class="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center mr-4 group-hover:bg-brand transition shrink-0">
+                                        <i class="fas fa-phone text-brand-accent"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-base md:text-lg">Phone <span class="font-normal text-xs font-amharic text-gray-300 ml-1">ስልክ</span></h4>
+                                        <p class="text-gray-300 text-sm md:text-base">+251 911 234 567</p>
+                                        <p class="text-gray-300 text-sm md:text-base">+251 116 555 444</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start group">
+                                    <div class="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center mr-4 group-hover:bg-brand transition shrink-0">
+                                        <i class="fas fa-clock text-brand-accent"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-base md:text-lg">Opening Hours <span class="font-normal text-xs font-amharic text-gray-300 ml-1">መክፈቻ ሰዓት</span></h4>
+                                        <p class="text-gray-300 text-sm md:text-base">Mon - Sun: 7:00 AM - 10:00 PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 md:mt-10">
+                            <h4 class="font-bold mb-4">Follow Us <span class="font-normal text-xs font-amharic text-gray-300 ml-1">ይከተሉን</span></h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand hover:scale-110 transition duration-300 text-lg md:text-xl"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand hover:scale-110 transition duration-300 text-lg md:text-xl"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-brand hover:scale-110 transition duration-300 text-lg md:text-xl"><i class="fab fa-telegram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Side -->
+                    <div class="rounded-2xl overflow-hidden border-4 border-white/10 shadow-lg h-64 md:h-auto relative group order-1 md:order-2">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.576610412795!2d38.85122156062808!3d9.011048209548864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b9b0029f8375d%3A0x672d6385eda1fb99!2sDelmela%20Caf%C3%A9%20and%20Restaurant!5e0!3m2!1sen!2set!4v1764846208736!5m2!1sen!2set" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="grayscale group-hover:grayscale-0 transition duration-500"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="font-serif text-2xl text-white font-bold mb-4">Delmela<span class="text-brand">.</span></p>
+            <div class="flex flex-wrap justify-center gap-4 md:space-x-6 text-sm mb-4">
+                <a href="#" class="hover:text-white transition hover:-translate-y-0.5 inline-block text-center">
+                    Privacy Policy <span class="block text-[10px] font-amharic opacity-70">የግላዊነት ፖሊሲ</span>
+                </a>
+                <a href="#" class="hover:text-white transition hover:-translate-y-0.5 inline-block text-center">
+                    Terms of Service <span class="block text-[10px] font-amharic opacity-70">የአገልግሎት ውሎች</span>
+                </a>
+                <a href="#" class="hover:text-white transition hover:-translate-y-0.5 inline-block text-center">
+                    Careers <span class="block text-[10px] font-amharic opacity-70">ስራዎች</span>
+                </a>
+            </div>
+            <p class="text-xs">&copy; 2024 Delmela Café and Restaurant. All rights reserved. Made in Ethiopia.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 z-50 bg-brand hover:bg-brand-dark text-white w-12 h-12 rounded-full shadow-lg transition-all duration-300 transform translate-y-10 opacity-0 pointer-events-none flex items-center justify-center focus:outline-none ring-2 ring-white/50 hover:scale-110">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        // --- Proposal Modal Logic ---
+        function openProposal() {
+            const modal = document.getElementById('proposal-modal');
+            const content = document.getElementById('proposal-content-wrapper');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = document.querySelector('#mobile-btn i');
+
+            // Close mobile menu if open
+            if (mobileMenu.classList.contains('active')) {
+                mobileMenu.classList.remove('active');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+
+            modal.classList.remove('hidden');
+            // Small timeout to allow display:block to apply before adding opacity
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeProposal() {
+            const modal = document.getElementById('proposal-modal');
+            const content = document.getElementById('proposal-content-wrapper');
+            
+            modal.classList.add('opacity-0');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }, 300);
+        }
+
+        // --- Preloader Logic ---
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            }, 1500); // 1.5s delay for branding
+            
+            // Initialize Pagination
+            updatePagination();
+        });
+
+        // --- Scroll Progress Logic ---
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("scroll-progress").style.width = scrolled + "%";
+        });
+
+        // --- Review System Logic ---
+        let currentRating = 0;
+
+        function setRating(rating) {
+            currentRating = rating;
+            document.getElementById('selected-rating').value = rating;
+            
+            const stars = document.querySelectorAll('.star-btn');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('text-gray-200');
+                    star.classList.add('text-brand-accent');
+                    star.style.transform = 'scale(1.2)';
+                } else {
+                    star.classList.add('text-gray-200');
+                    star.classList.remove('text-brand-accent');
+                    star.style.transform = 'scale(1)';
+                }
+            });
+        }
+
+        function submitReview(event) {
+            event.preventDefault();
+            
+            if (currentRating === 0) {
+                alert('Please select a star rating.');
+                return;
+            }
+
+            const name = document.getElementById('review-name').value;
+            const text = document.getElementById('review-text').value;
+            const container = document.getElementById('reviews-container');
+
+            // Create Star HTML
+            let starsHtml = '';
+            for(let i=0; i<5; i++) {
+                if(i < currentRating) {
+                    starsHtml += '<i class="fas fa-star"></i>';
+                } else {
+                    starsHtml += '<i class="far fa-star text-gray-300"></i>';
+                }
+            }
+
+            // Create New Review Card
+            const newReview = document.createElement('div');
+            newReview.className = 'bg-white p-8 rounded-3xl shadow-lg border border-gray-100 reveal active border-l-4 border-l-brand animate-fade-in-up';
+            newReview.innerHTML = `
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-brand to-brand-light rounded-full flex items-center justify-center text-white font-bold text-2xl mr-4 shadow-lg">${name.charAt(0).toUpperCase()}</div>
+                    <div>
+                        <h4 class="font-bold text-gray-800 text-lg">${name}</h4>
+                        <div class="flex text-brand-accent text-sm mt-1">
+                            ${starsHtml}
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <i class="fas fa-quote-left absolute -top-2 -left-2 text-brand/10 text-4xl"></i>
+                    <p class="text-gray-600 italic leading-relaxed text-lg pl-4">"${text}"</p>
+                    <p class="text-xs text-gray-400 mt-4 text-right font-medium uppercase tracking-wide">Just now</p>
+                </div>
+            `;
+
+            // Add to grid (prepend)
+            container.insertBefore(newReview, container.firstChild);
+
+            // Reset Form
+            document.getElementById('review-form').reset();
+            setRating(0);
+            
+            alert('Thank you! Your review has been submitted successfully.');
+        }
+
+        // Pagination & Filtering Logic
+        const itemsPerPage = 8;
+        let currentPage = 1;
+        let currentCategory = 'all';
+
+        function updatePagination() {
+            const allItems = document.querySelectorAll('.menu-item');
+            
+            // 1. Filter items based on category
+            const matchingItems = Array.from(allItems).filter(item => {
+                return currentCategory === 'all' || item.classList.contains(currentCategory);
+            });
+
+            const totalPages = Math.ceil(matchingItems.length / itemsPerPage);
+            
+            // 2. Hide ALL items first
+            allItems.forEach(item => {
+                item.style.display = 'none';
+                item.classList.remove('active');
+            });
+
+            // 3. Determine items for the current page
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = matchingItems.slice(start, end);
+            
+            // 4. Show items for current page
+            pageItems.forEach((item, index) => {
+                item.style.display = 'flex'; // Changed to flex to support flex-col layout
+                // Small delay for staggered animation effect on page change
+                setTimeout(() => {
+                    item.classList.add('active');
+                }, index * 50);
+            });
+
+            // 5. Render Pagination Controls
+            renderPaginationControls(totalPages);
+        }
+
+        function renderPaginationControls(totalPages) {
+            const container = document.getElementById('pagination-controls');
+            if (!container) return; 
+            container.innerHTML = '';
+
+            // Only show pagination if there is more than 1 page
+            if (totalPages <= 1) return;
+
+            // Prev Button
+            const prevBtn = document.createElement('button');
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.className = `w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center transition-all duration-300 ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed bg-gray-50' : 'text-brand hover:bg-brand hover:text-white shadow-md hover:-translate-y-1'}`;
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updatePagination();
+                    document.getElementById('menu-grid').scrollIntoView({behavior: 'smooth', block: 'start'});
+                }
+            };
+            container.appendChild(prevBtn);
+
+            // Page Numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = i;
+                btn.className = `w-12 h-12 rounded-full font-bold text-lg transition-all duration-300 ${i === currentPage ? 'bg-brand text-white shadow-xl transform scale-110' : 'text-gray-500 hover:bg-gray-100 hover:text-brand'}`;
+                btn.onclick = () => {
+                    currentPage = i;
+                    updatePagination();
+                    document.getElementById('menu-grid').scrollIntoView({behavior: 'smooth', block: 'start'});
+                };
+                container.appendChild(btn);
+            }
+
+            // Next Button
+            const nextBtn = document.createElement('button');
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.className = `w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center transition-all duration-300 ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed bg-gray-50' : 'text-brand hover:bg-brand hover:text-white shadow-md hover:-translate-y-1'}`;
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updatePagination();
+                    document.getElementById('menu-grid').scrollIntoView({behavior: 'smooth', block: 'start'});
+                }
+            };
+            container.appendChild(nextBtn);
+        }
+
+        // Menu Filter Logic (Updated to support pagination)
+        function filterMenu(category) {
+            // Update buttons visuals
+            const buttons = document.querySelectorAll('.menu-filter');
+            buttons.forEach(btn => {
+                const isActive = btn.onclick.toString().includes(category);
+                if (isActive) {
+                    btn.classList.add('active', 'bg-brand', 'text-white', 'shadow-lg');
+                    btn.classList.remove('bg-gray-100', 'text-gray-600');
+                } else {
+                    btn.classList.remove('active', 'bg-brand', 'text-white', 'shadow-lg');
+                    btn.classList.add('bg-gray-100', 'text-gray-600');
+                }
+            });
+
+            // Reset to first page and update state
+            currentCategory = category;
+            currentPage = 1;
+            updatePagination();
+        }
+
+        // Reveal on Scroll Logic
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target); 
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Active Nav Link Logic
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-brand');
+                link.classList.add('text-gray-600');
+                // Remove highlight from all
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.remove('text-gray-600');
+                    link.classList.add('text-brand');
+                }
+            });
+        });
+
+        // Back to Top Logic
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
+                backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+            } else {
+                backToTopBtn.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
+                backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-btn');
+        const menu = document.getElementById('mobile-menu');
+        const icon = btn.querySelector('i');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('active');
+            if(menu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md', 'py-1');
+                navbar.classList.remove('py-2');
+            } else {
+                navbar.classList.remove('shadow-md', 'py-1');
+                navbar.classList.add('py-2');
+            }
+        });
+    </script>
+</body>
+</html>
