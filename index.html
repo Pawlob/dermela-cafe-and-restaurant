@@ -597,8 +597,8 @@
                 </p>
             </div>
             
-            <!-- Credits (Fixed Positioning) -->
-            <p class="mt-4 sm:mt-16 text-[10px] text-white/60 font-light tracking-[0.2em] uppercase animate-fade-in-up" style="animation-delay: 1s;">
+            <!-- Credits (Mobile Only - Positioned in Flow) -->
+            <p class="mt-4 md:hidden text-[10px] text-white/60 font-light tracking-[0.2em] uppercase animate-fade-in-up" style="animation-delay: 1s;">
                 Designed by <a href="https://pawlos-mulugeta.vercel.app/" target="_blank" class="animate-pulse hover:text-white transition-colors">Pawlos Mulugeta</a>
             </p>
         </div>
@@ -614,6 +614,11 @@
                 <span class="block text-[10px] sm:text-xs font-amharic font-normal mt-0.5 sm:mt-1 opacity-80 group-hover:opacity-100">አድራሻችን</span>
             </a>
         </div>
+
+        <!-- Credits (Desktop Only - Positioned Bottom Right) -->
+        <p class="hidden md:block absolute bottom-6 right-8 text-[10px] text-brand-dark font-medium tracking-[0.2em] uppercase animate-fade-in-up z-30" style="animation-delay: 1s;">
+            Designed by <a href="https://pawlos-mulugeta.vercel.app/" target="_blank" class="animate-pulse text-brand-dark hover:text-brand transition-colors font-bold">Pawlos Mulugeta</a>
+        </p>
         
         <!-- Gradient Fade Element (Hero to About) -->
         <div class="hero-bottom-gradient"></div>
