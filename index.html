@@ -6,6 +6,26 @@
     <title>Delmela Café & Restaurant | Ethiopia</title>
     <meta name="description" content="Experience the best of modern tastes at Delmela Café and Restaurant.">
     
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="Delmela, Cafe, Restaurant, Ethiopia, Addis Ababa, Bole, Summit, Ethiopian Coffee, International Food, Breakfast, Lunch, Dinner, Fusion Cuisine">
+    <meta name="author" content="Pawlos Mulugeta">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#006D77">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://delmela.com/">
+    <meta property="og:title" content="Delmela Café & Restaurant | Ethiopia">
+    <meta property="og:description" content="Experience the best of modern tastes at Delmela Café and Restaurant.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://delmela.com/">
+    <meta property="twitter:title" content="Delmela Café & Restaurant | Ethiopia">
+    <meta property="twitter:description" content="Experience the best of modern tastes at Delmela Café and Restaurant.">
+    <meta property="twitter:image" content="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80">
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -40,6 +60,7 @@
                         'ken-burns': 'kenBurns 20s ease-out infinite alternate',
                         'float': 'float 6s ease-in-out infinite',
                         'spin-slow': 'spin 12s linear infinite',
+                        'blink-color': 'blinkColor 2s infinite',
                     },
                     keyframes: {
                         kenBurns: {
@@ -49,6 +70,10 @@
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blinkColor: {
+                            '0%, 100%': { color: '#FFD700' }, // Gold
+                            '50%': { color: '#006D77' },     // Green (Teal)
                         }
                     }
                 }
@@ -244,7 +269,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center group cursor-pointer">
                     <a href="#" id="nav-logo" class="font-serif text-3xl font-bold text-white tracking-tighter group-hover:text-brand-accent transition-colors duration-300">
-                        Delmela<span class="text-brand text-4xl group-hover:text-brand-accent transition-colors">.</span>
+                        Delmela<span class="text-4xl animate-blink-color">.</span>
                     </a>
                 </div>
 
@@ -489,7 +514,7 @@
                                 <h4 class="font-bold text-gray-800">Backend Development</h4>
                                 <p class="text-sm text-gray-500 mt-1">Database setup, API integrations for dynamic menu, and CMS configuration.</p>
                             </div>
-                            <div class="p-4 text-right text-gray-600 font-medium">20,000 ETB</div>
+                            <div class="p-4 text-right text-gray-600 font-medium">30,000 ETB</div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-3 border-b border-gray-50">
@@ -510,7 +535,7 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-3 bg-brand/5">
                             <div class="p-5 md:col-span-2 font-bold text-brand-dark text-lg">Total Project Investment</div>
-                            <div class="p-5 text-right font-bold text-brand text-lg">74,000 ETB</div>
+                            <div class="p-5 text-right font-bold text-brand text-lg">84,000 ETB</div>
                         </div>
                     </div>
                     <p class="text-xs text-gray-400 mt-4 italic">* Payment Terms: 50% upfront, 50% upon completion.</p>
@@ -1463,4 +1488,3 @@
     </script>
 </body>
 </html>
-
